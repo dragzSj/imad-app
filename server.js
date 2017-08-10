@@ -5,24 +5,46 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
-var articleOne = {
-    title: 'Article-One',
-    heading: 'Article 1',
-    date: 'Aug 10, 2k17',
-    content: `
-        <p>
-            This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
-            This is the Content of article 1.This is the Content of article 1.
-        </p>
-        <p>
-            This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
-            This is the Content of article 1.This is the Content of article 1.
-        </p>
-        <p>
-            This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
-            This is the Content of article 1.This is the Content of article 1.
-        </p>
-    `
+var articles = {
+    'article_one': {
+        title: 'Article-One',
+        heading: 'Article 1',
+        date: 'Aug 10, 2k17',
+        content: `
+            <p>
+                This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
+                This is the Content of article 1.This is the Content of article 1.
+            </p>
+            <p>
+                This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
+                This is the Content of article 1.This is the Content of article 1.
+            </p>
+            <p>
+                This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1. This is the Content of article 1.
+                This is the Content of article 1.This is the Content of article 1.
+            </p>
+        `
+    },
+    'article_two': {
+        title: 'Article-Two',
+        heading: 'Article 2',
+        date: 'Aug 12, 2k17',
+        content: `
+            <p>
+                This is the Content of article 2............
+            </p>
+        `
+    },
+    'article_three': {
+        title: 'Article-Three',
+        heading: 'Article 3',
+        date: 'Aug 14, 2k17',
+        content: `
+            <p>
+                .........This is the Content of article 3............
+            </p>
+        `
+    }
 };
 
 function createTemplate (data){
@@ -73,16 +95,9 @@ app.get('/ui/madi.png', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'madi.png'));
 });
 
-app.get('/article_one', function (req, res) {
-  res.send(createTemplate(articleOne));    
-});
-
-app.get('/article_two', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'article_two.html'));    
-});
-
-app.get('/article_three', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'article_three.html'));    
+app.get('/:articleName', function (req, res) {
+  var articleName = req.params.articleName;    
+  res.send(createTemplate(articles[articleName]));    
 });
 
 // Do not change port, otherwise your app won't run on IMAD servers
