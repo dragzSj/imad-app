@@ -26,8 +26,14 @@ var counter = 0;
 
 button.onclick = function () {
     //Make counter Endpoint Request
+    var request = new XMLHttpRequest();
     
     //Capture response and store it in a variable
+   // request.onreadystatechange = function () {
+     //   if (){
+            
+     //   }
+   // }
     
     //Render variable in current span
     counter = counter + 1;
