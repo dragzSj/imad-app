@@ -25,8 +25,6 @@ button.onclick = function () {
 };
 
 //Submit name
-var nameInput = document.getElementById('name');
-var name = nameInput.value;
 var submit = document.getElementById('submit_btn');
 submit.onclick = function (){
     //Make counter Endpoint Request
@@ -53,6 +51,8 @@ submit.onclick = function (){
     };
     
     //Make the request
+    var nameInput = document.getElementById('name');
+    var name = nameInput.value;
     request.open('GET', 'http://dragzsj.imad.hasura-app.io/submit-name?name=' + name, true);
     request.send(null);
     //make req to ser and send name
