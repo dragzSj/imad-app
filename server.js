@@ -110,6 +110,16 @@ app.get('/:articleName', function (req, res) {
   res.send(createTemplate(articles[articleName]));    
 });
 
+var names = [];
+app.get('/submit-name/:name', function (req, res){
+  // Get name from request object
+  var name = req.params.name;
+  
+  names.push(name);
+  // JSON
+  res.send(JSON.stringify(names));//todo
+});
+
 // Do not change port, otherwise your app won't run on IMAD servers
 // Use 8080 only for local development if you already have apache running on 80
 
