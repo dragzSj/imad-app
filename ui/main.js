@@ -22,21 +22,25 @@ img.onclick = function () {
 //counter code
 
 var button = document.getElementById('counter');
-var counter = 0;
 
 button.onclick = function () {
     //Make counter Endpoint Request
     var request = new XMLHttpRequest();
     
     //Capture response and store it in a variable
-   // request.onreadystatechange = function () {
-     //   if (){
-            
-     //   }
-   // }
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHtmlRequest.DONE){
+            //take action
+            if (request.status === 200){
+                var counter = request.responseText;
+                var span = document.getElementById('count');
+                span.innerHTML = counter.toString();
+            }
+        }
+        //Not done yet
+    };
     
-    //Render variable in corrent span
-    counter = counter + 1;
-    var span = document.getElementById('count');
-    span.innerHTML = counter.toString();
+    //Make the request
+    request.open('GET', 'http://dragzsj.imad.hasura-app.io/counter', true);
+    request.send(null);
 };
