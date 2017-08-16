@@ -32,4 +32,11 @@ submit.onclick = function (){
     //make req to ser and send name
     
     //capture name list and render as a list
+    var names = ['name1', 'name2', 'name3'];
+    var list = '';
+    for (var i=0; i< names.length; i++){
+        list += '<li>' + names[i] + '</li>'; 
+    }
+    var ul = document.getElementById('namelist');
+    ul.innerHTMl = list;
 };
