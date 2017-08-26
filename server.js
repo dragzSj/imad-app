@@ -137,9 +137,21 @@ app.get('/submit-name', function (req, res){ // URL: /submit-name?name=xxxxx
   res.send(JSON.stringify(names));//todo
 });
 
-app.get('/:articleName', function (req, res) {
-  var articleName = req.params.articleName;    
-  res.send(createTemplate(articles[articleName]));    
+app.get('/article/:articleName', function (req, res) {
+  //var articleName = req.params.articleName;    
+  pool.query("SELCT * FROM article WHERE title = " + req.params.articleName, function(err, result){
+      if(err){
+          res.status(500).send(err.toString());
+      }else{
+          if(results.rows.length === 0){
+              res.status(400).send('Article not found');
+          }else{
+              var articleData = result.rows[0];
+              res.send(createTemplate(articleData));
+          }
+      }
+  });
+  //res.send(createTemplate(articles[articleName]));    
 });
 
 // Do not change port, otherwise your app won't run on IMAD servers
