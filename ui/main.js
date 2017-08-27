@@ -65,7 +65,7 @@ submit.onclick = function (){
     console.log(password);
     request.open('POST', 'http://dragzsj.imad.hasura-app.io/login', true);
     request.setRequestHeader('Content-type', 'application/json'); 
-    request.send(JSON.stringify({username: username, password: passsword}));
+    request.send(JSON.stringify({username: username, password: password}));
     //make req to ser and send name
     
    
