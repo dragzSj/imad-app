@@ -103,7 +103,8 @@ function loadLoginForm () {
                   alert('Something went wrong on the server');
                   submit.value = 'Login';
               }
-              loadLogin();
+              //loadLogin();
+              loadLoggedInUser(this.responseText);
           }  
           // Not done yet
         };
