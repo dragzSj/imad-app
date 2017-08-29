@@ -104,7 +104,7 @@ function loadLoginForm () {
                   submit.value = 'Login';
               }
               //loadLogin();
-              loadLoggedInUser(this.responseText);
+              
           }  
           // Not done yet
         };
@@ -118,7 +118,7 @@ function loadLoginForm () {
         request.setRequestHeader('Content-Type', 'application/json');
         request.send(JSON.stringify({username: username, password: password}));  
         submit.value = 'Logging in...';
-        
+        loadLoggedInUser(username);
     };
     
     var register = document.getElementById('register_btn');
