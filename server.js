@@ -18,41 +18,50 @@ var app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'RandomSecretValue',
+    secret: 'randomSecretValue',
     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
 
 function createTemplate (data){
     var title = data.title;
-    var heading = data.heading;
     var date = data.date;
+    var heading = data.heading;
     var content = data.content;
+    
     var htmlTemplate = `
-        <html>
-        <head>
-            <title>
-                ${title}
-            </title>
-            <meta name="viewport" content="width=device-width, initiqal-scale=1" />
-            <link href="/ui/style.css" rel="stylesheet" />
-        </head>
-        <body>
-            <div class="container">
-                <div>
-                    <a href="/">HOME</a>
-                </div>
-                <hr/>
-                <h3>
-                    ${heading}
-                </h3>
-                <div>
-                    ${date.toDateString()}
-                </div>
-                <div>
-                    ${content}
-                </div>
-            </div>
-        </body>
+    <html>
+      <head>
+          <title>
+              ${title}
+          </title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link href="/ui/style.css" rel="stylesheet" />
+      </head> 
+      <body>
+          <div class="container">
+              <div>
+                  <a href="/">Home</a>
+              </div>
+              <hr/>
+              <h3>
+                  ${heading}
+              </h3>
+              <div>
+                  ${date.toDateString()}
+              </div>
+              <div>
+                ${content}
+              </div>
+              <hr/>
+              <h4>Comments</h4>
+              <div id="comment_form">
+              </div>
+              <div id="comments">
+                <center>Loading comments...</center>
+              </div>
+          </div>
+          <script type="text/javascript" src="/ui/article.js"></script>
+      </body>
     </html>
     `;
     return htmlTemplate;
@@ -136,16 +145,59 @@ app.get('/logout', function (req, res) {
 });
 
 var pool = new Pool(config);
-app.get('/test-db', function (req, res) {
-   //make a select request
-   //return a response with the results
-    pool.query('SELECT * FROM test', function(err, result){
-        if(err){
-            res.status(500).send(err.toString());
-        }else{
-            res.send(JSON.stringify(result.rows));
-        }
-    });
+app.get('/get-articles', function (req, res) {
+   // make a select request
+   // return a response with the results
+   pool.query('SELECT * FROM article ORDER BY date DESC', function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          res.send(JSON.stringify(result.rows));
+      }
+   });
+});
+
+app.get('/get-comments/:articleName', function (req, res) {
+   // make a select request
+   // return a response with the results
+   pool.query('SELECT comment.*, "user".username FROM article, comment, "user" WHERE article.title = $1 AND article.id = comment.article_id AND comment.user_id = "user".id ORDER BY comment.timestamp DESC', [req.params.articleName], function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          res.send(JSON.stringify(result.rows));
+      }
+   });
+});
+
+app.post('/submit-comment/:articleName', function (req, res) {
+   // Check if the user is logged in
+    if (req.session && req.session.auth && req.session.auth.userId) {
+        // First check if the article exists and get the article-id
+        pool.query('SELECT * from article where title = $1', [req.params.articleName], function (err, result) {
+            if (err) {
+                res.status(500).send(err.toString());
+            } else {
+                if (result.rows.length === 0) {
+                    res.status(400).send('Article not found');
+                } else {
+                    var articleId = result.rows[0].id;
+                    // Now insert the right comment for this article
+                    pool.query(
+                        "INSERT INTO comment (comment, article_id, user_id) VALUES ($1, $2, $3)",
+                        [req.body.comment, articleId, req.session.auth.userId],
+                        function (err, result) {
+                            if (err) {
+                                res.status(500).send(err.toString());
+                            } else {
+                                res.status(200).send('Comment inserted!');
+                            }
+                        });
+                }
+            }
+       });     
+    } else {
+        res.status(403).send('Only logged in users can comment');
+    }
 });
 
 var counter = 0;
