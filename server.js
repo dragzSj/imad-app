@@ -145,7 +145,7 @@ app.get('/logout', function (req, res) {
 });
 
 var pool = new Pool(config);
-app.get('/get-articles', function (req, res) {
+app.get('/get-article', function (req, res) {
    // make a select request
    // return a response with the results
    pool.query('SELECT * FROM article ORDER BY date DESC', function (err, result) {
