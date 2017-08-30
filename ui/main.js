@@ -190,7 +190,7 @@ function loadArticles () {
                 var articleData = JSON.parse(this.responseText);
                 for (var i=0; i< articleData.length; i++) {
                     content += `<li>
-                    <a href="/articles/${articleData[i].title}">${articleData[i].heading}</a>
+                    <a href="/article/${articleData[i].title}">${articleData[i].heading}</a>
                     (${articleData[i].date.split('T')[0]})</li>`;
                 }
                 content += "</ul>"
@@ -201,7 +201,7 @@ function loadArticles () {
         }
     };
     
-    request.open('GET', '/get-article', true);
+    request.open('GET', '/article/articleName', true);
     request.send(null);
 }
 
