@@ -193,7 +193,7 @@ function loadArticles () {
                     <a href="/article/:${articleData[i].title}">${articleData[i].heading}</a>
                     (${articleData[i].date.split('T')[0]})</li>`;
                 }
-                content += "</ul>"
+                content += "</ul>";
                 articles.innerHTML = content;
             } else {
                 articles.innerHTML = 'Oops! Could not load all articles!';
@@ -201,7 +201,7 @@ function loadArticles () {
         }
     };
     
-    request.open('GET', '/article/:articleName', true);
+    request.open('GET', '/get-article', true);
     request.send(null);
 }
 
