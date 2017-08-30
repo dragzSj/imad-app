@@ -201,7 +201,7 @@ function loadArticles () {
         }
     };
     
-    request.open('GET', '/article/articleName', true);
+    request.open('GET', '/article', true);
     request.send(null);
 }
 
