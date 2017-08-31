@@ -60,7 +60,7 @@ function createTemplate (data){
                 <center>Loading comments from serverJS...</center>
               </div>
           </div>
-          <script type="text/javascript" src="/ui/article.js"></script>
+          <script type="text/javascript" src="/article.js"></script>
       </body>
     </html>
     `;
