@@ -60,13 +60,13 @@ function createTemplate (data){
                 <center>Loading comments from serverJS...</center>
               </div>
           </div>
-          
+          <script type="text/javascript" src="/ui/articlescript.js"></script>
       </body>
     </html>
     `;
     return htmlTemplate;
 }
-//<script type="text/javascript" src="/ui/articlescript.js"></script>
+//
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
